@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="CSS.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <header class="site-header">
+            <nav class="main-nav">
+                <a href="index.html" class="nav-item"><span class="nav-text">Головна</span></a>
+                <a href="contacts.html" class="nav-item"><span class="nav-text">Контакти</span></a>
+                <a href="about.html" class="nav-item"><span class="nav-text">Про нас</span></a>
+                <a href="cart.html" class="nav-item">
+                    <span class="nav-text text-green">Корзина💵 (<span id="cart-counter">0</span>)</span>
+                </a>
+                <span class="nav-item" style="color: #ffd700; font-weight: bold; cursor: default; border-color: #ffd700;">
+                    <span id="user-balance" style="-webkit-text-stroke:0px; font-size:13px;">1650 грн</span>
+                </span>
+                <button id="admin-refill-btn" style="background: #000000; color: #ffffff; border: 2px solid #ffd700; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 12px; cursor: pointer; height: 38px; width: 90px; transition: transform 0.1s;">
+                    ⚙️ Адмін
+                </button>
+            </nav>
+        </header>
+
+        <main class="main-wrapper">
+            <h1 class="page-title">Твоя Корзина</h1>
+
+            <div id="cart-wrapper" class="products-grid"></div> 
+            
+            <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 0 10px;">
+                <button id="clear-cart-btn" class="buy-btn" style="position: static; background: #990000; cursor: pointer; display: none; padding: 12px 24px; font-size: 14px; width: auto; height: auto; border-radius: 12px; text-transform: uppercase;">Очистити корзину</button>
+                <button id="checkout-btn" class="buy-btn" style="position: static; background: #00aa00; cursor: pointer; display: none; padding: 12px 24px; font-size: 14px; font-weight: bold; width: auto; height: auto; border-radius: 12px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,170,0,0.4);">ЗАМОВИТИ 🚀</button>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <strong>Центр підтримки</strong>
+                    <a href="#">Telegram</a>
+                    <a href="contacts.html">Контакты</a>
+                    <a href="#">Програма лояльності</a>
+                    <a href="#">Повернення і обмін</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Каталог</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">Розпродаж</a>
+                    <a href="#">Осінь-Зима</a>
+                    <a href="#">Сертефікати</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Меню</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">КампаніЇ</a>
+                    <a href="#">Оптовим покупцям</a>
+                    <a href="#">Доставка і оплата</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Соц. Мережі</strong>
+                    <a href="#">Іnstagram</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <strong>Написати нам</strong>
+                <div class="email-input-wrapper">
+                    <input type="email" placeholder="Email" class="email-input">
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartWrapper = document.getElementById('cart-wrapper');
+            const clearBtn = document.getElementById('clear-cart-btn');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const balanceEl = document.getElementById('user-balance');
+            const cartCounter = document.getElementById('cart-counter');
+            const adminBtn = document.getElementById('admin-refill-btn');
+            
+            function updateBalanceDisplay() {
+                const balance = localStorage.getItem('balance') || '1650';
+                if (balanceEl) balanceEl.textContent = balance + ' грн';
+            }
+
+            function displayCart() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                if (cartCounter) cartCounter.textContent = cart.length;
+                
+                updateBalanceDisplay();
+
+                if (cart.length === 0) {
+                    cartWrapper.innerHTML = '<p style="text-align:center; width:100%; font-size:18px;">Тут поки що порожньо...</p>';
+                    clearBtn.style.display = 'none';
+                    checkoutBtn.style.display = 'none';
+                    return;
+                }
+                
+                clearBtn.style.display = 'inline-block';
+                checkoutBtn.style.display = 'inline-block';
+                cartWrapper.innerHTML = '';
+                
+                cart.forEach((product, index) => {
+                    cartWrapper.innerHTML += `
+                        <article class="product-card">
+                            <img src="${product.img}" class="product-img">
+                            <div class="product-info">
+                                <span class="info-label">Опис</span>
+                                <h3 class="info-title">${product.title}</h3>
+                                <p class="info-desc">${product.desc}</p>
+                            </div>
+                            <button class="buy-btn" style="background:gray; cursor:pointer;" onclick="removeItem(${index})">Видалити</button>
+                        </article>
+                    `;
+                });
+            }
+
+            if (adminBtn) {
+                adminBtn.addEventListener('click', () => {
+                    const amount = prompt("Введіть суму в грн для зарахування на баланс:", "1000");
+                    if (amount === null) return;
+                    const parsedAmount = parseInt(amount);
+                    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+                        alert("Будь ласка, введіть коректне число!");
+                        return;
+                    }
+                    let currentBalance = parseInt(localStorage.getItem('balance')) || 1650;
+                    currentBalance += parsedAmount;
+                    localStorage.setItem('balance', currentBalance.toString());
+                    updateBalanceDisplay();
+                    alert(`💰 Баланс успішно поповнено на +${parsedAmount} грн!`);
+                });
+            }
+
+           а
+            window.removeItem = function(index) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const removedProduct = cart[index];
+
+                if (removedProduct && removedProduct.price) {
+                    let currentBalance = parseInt(localStorage.getItem('balance')) || 1650;
+                    currentBalance += removedProduct.price; // Возвращаем стоимость на баланс
+                    localStorage.setItem('balance', currentBalance.toString());
+                }
+
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+            }
+
+            
+            clearBtn.addEventListener('click', () => {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                let currentBalance = parseInt(localStorage.getItem('balance')) || 1650;
+
+                
+                let totalRefund = 0;
+                cart.forEach(product => {
+                    if (product.price) {
+                        totalRefund += product.price;
+                    }
+                });
+
+                currentBalance += totalRefund; // Возвращаем всю сумму обратно
+                localStorage.setItem('balance', currentBalance.toString());
+
+                localStorage.removeItem('cart');
+                displayCart();
+            });
+
+            
+            checkoutBtn.addEventListener('click', () => {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                if (cart.length === 0) return;
+                const confirmOrder = confirm(`Ви впевнені, що хочете оформити замовлення?`);
+                if (confirmOrder) {
+                    localStorage.removeItem('cart');
+                    alert("🎉 Замовлення успішно оформлено!");
+                    window.location.href = 'HTML.html';
+                }
+            });
+
+            displayCart();
+        });
+    </script>
+</body>
+</html>

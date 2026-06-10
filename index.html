@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кращий сайт для покупки товарів</title>
+    <link rel="stylesheet" href="CSS.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <header class="site-header">
+            <nav class="main-nav">
+                <a href="index.html" class="nav-item"><span class="nav-text">Головна</span></a>
+                <a href="contacts.html" class="nav-item"><span class="nav-text">Контакти</span></a>
+                <a href="about.html" class="nav-item"><span class="nav-text">Про нас</span></a>
+                <a href="cart.html" class="nav-item">
+                    <span class="nav-text text-green">Корзина💵 (<span id="cart-counter">0</span>)</span>
+                </a>
+                <span class="nav-item" style="color: #ffd700; font-weight: bold; cursor: default; border-color: #ffd700;">
+                    <span id="user-balance" style="-webkit-text-stroke:0px; font-size:13px;">1650 грн</span>
+                </span>
+                <button id="admin-refill-btn" style="background: #000000; color: #ffffff; border: 2px solid #ffd700; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 12px; cursor: pointer; height: 38px; width: 90px; transition: transform 0.1s;">
+                    ⚙️ Адмін
+                </button>
+            </nav>
+        </header>
+
+        <main class="main-wrapper">
+            <h1 class="page-title">Головна</h1>
+
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="🔍 Пошук одягу чи кросівок..." class="search-input">
+            </div>
+
+            <div class="products-grid" id="products-container"></div>
+
+            <section class="banner-container">
+                <div class="banner-bg">
+                    <a href="" class="banner-item-link" data-category="all"><div class="banner-item">Всі товари</div></a>
+                    <a href="" class="banner-item-link" data-category="actual"><div class="banner-item">Актуальне</div></a>
+                    <a href="" class="banner-item-link" data-category="new"><div class="banner-item">Новинки</div></a>
+                    <a href="" class="banner-item-link" data-category="sales"><div class="banner-item">Знижки</div></a>
+                    <a href="" class="banner-item-link" data-category="popular"><div class="banner-item">Популярне</div></a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <strong>Центр підтримки</strong>
+                    <a href="#">Telegram</a>
+                    <a href="contacts.html">Контакты</a>
+                    <a href="#">Програма лояльності</a>
+                    <a href="#">Повернення і обмін</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Каталог</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">Розпродаж</a>
+                    <a href="#">Осінь-Зима</a>
+                    <a href="#">Сертефікати</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Меню</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">КампаніЇ</a>
+                    <a href="#">Оптовим покупцям</a>
+                    <a href="#">Доставка і оплата</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Соц. Мережі</strong>
+                    <a href="#">Іnstagram</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <strong>Написати нам</strong>
+                <div class="email-input-wrapper">
+                    <input type="email" placeholder="Email" class="email-input">
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="JAVASCRIPT.Js"></script>
+</body>
+</html>

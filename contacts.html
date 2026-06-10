@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакти</title>
+    <link rel="stylesheet" href="CSS.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <header class="site-header">
+            <nav class="main-nav">
+                <a href="index.html" class="nav-item"><span class="nav-text">Головна</span></a>
+                <a href="contacts.html" class="nav-item"><span class="nav-text">Контакти</span></a>
+                <a href="about.html" class="nav-item"><span class="nav-text">Про нас</span></a>
+                <a href="cart.html" class="nav-item">
+                    <span class="nav-text text-green">Корзина💵 (<span id="cart-counter">0</span>)</span>
+                </a>
+                <span class="nav-item" style="color: #ffd700; font-weight: bold; cursor: default; border-color: #ffd700;">
+                    <span id="user-balance" style="-webkit-text-stroke:0px; font-size:13px;">1650 грн</span>
+                </span>
+                <button id="admin-refill-btn" style="background: #000000; color: #ffffff; border: 2px solid #ffd700; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 12px; cursor: pointer; height: 38px; width: 90px; transition: transform 0.1s;">
+                    ⚙️ Адмін
+                </button>
+            </nav>
+        </header>
+
+        <main class="main-wrapper">
+            <h1 class="page-title">Контакти</h1>
+            
+            <div style="text-align: center; max-width: 600px; margin: 0 auto; background: linear-gradient(to bottom, #ff0088, #91005c); padding: 40px; border-radius: 30px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+                <h2 style="margin-top: 0;">Зв'яжіться з нами</h2>
+                <p style="font-size: 18px; margin: 20px 0;">📱 Телефон: +380 99 999 99 99</p>
+                <p style="font-size: 18px; margin: 20px 0;">✈️ Telegram: @shop_support</p>
+                <p style="font-size: 18px; margin: 20px 0;">📍 Адреса: м. Київ, вул. Хрещатик, 1</p>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <strong>Центр підтримки</strong>
+                    <a href="#">Telegram</a>
+                    <a href="contacts.html">Контакты</a>
+                    <a href="#">Програма лояльності</a>
+                    <a href="#">Повернення і обмін</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Каталог</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">Розпродаж</a>
+                    <a href="#">Осінь-Зима</a>
+                    <a href="#">Сертефікати</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Меню</strong>
+                    <a href="#">Новинки</a>
+                    <a href="#">КампаніЇ</a>
+                    <a href="#">Оптовим покупцям</a>
+                    <a href="#">Доставка і оплата</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Соц. Мережі</strong>
+                    <a href="#">Іnstagram</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <strong>Написати нам</strong>
+                <div class="email-input-wrapper">
+                    <input type="email" placeholder="Email" class="email-input">
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartCounter = document.getElementById('cart-counter');
+            const balanceEl = document.getElementById('user-balance');
+            const adminBtn = document.getElementById('admin-refill-btn');
+
+            function updateHeader() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                if (cartCounter) cartCounter.textContent = cart.length;
+                const balance = localStorage.getItem('balance') || '1650';
+                if (balanceEl) balanceEl.textContent = balance + ' грн';
+            }
+
+            if (adminBtn) {
+                adminBtn.addEventListener('click', () => {
+                    const amount = prompt("Введіть суму в грн для зарахування на баланс:", "1000");
+                    if (amount === null) return;
+                    const parsedAmount = parseInt(amount);
+                    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+                        alert("Будь ласка, введіть коректне число!");
+                        return;
+                    }
+                    let currentBalance = parseInt(localStorage.getItem('balance')) || 1650;
+                    currentBalance += parsedAmount;
+                    localStorage.setItem('balance', currentBalance.toString());
+                    updateHeader();
+                    alert(`💰 Баланс успішно поповнено на +${parsedAmount} грн!`);
+                });
+            }
+
+            updateHeader();
+        });
+    </script>
+</body>
+</html>
